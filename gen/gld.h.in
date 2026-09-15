@@ -45,7 +45,7 @@
 
         gldActiveTexture(GL_TEXTURE0);
 
-    For Opengl functions that return something, you now have to pass the
+    For OpenGL functions that return something, you now have to pass the
     variable you want to return to as first argument. 
 
         GLuint gl_program;
