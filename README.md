@@ -6,7 +6,7 @@
 
 # gld.h
 
-gld.h is a header-only C library to help with debugging while working with OpenGL. It contains macros which wrap OpenGL functions in order to clearly break when errors occur while providing a clear error message. This may be preferable to `GL_KHR_debug` callback based error handling supported since OpenGL 4.3, because this error handling mechanism will break immediatly when and where an error occurs. This library is meant to help in debug builds only, and is designed to leave your code as if it was never even there when you compile release builds.
+gld.h is a header-only C library to help debug OpenGL. It contains macros which wrap OpenGL functions in order to break when errors occur while providing an error message. This may be preferable to `GL_KHR_debug` callback based error handling supported since OpenGL 4.3, because this error handling mechanism will break immediatly when and where an error occurs. This library is meant to help in debug builds only, and is designed to leave your code as if it was never even there when you compile release builds.
 
 ## How To Use
 
