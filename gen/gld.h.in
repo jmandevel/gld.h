@@ -32,7 +32,6 @@
 
     Created By Dan Aime Valcour (jmandevel) - https://github.com/jmandevel
 
-
     In order to use this library, include it after including your OpenGL loader
     (such as GLAD or GLEW).
 
