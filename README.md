@@ -6,7 +6,7 @@
 
 # gld.h
 
-gld.h is a header-only C library to help with debugging while working with OpenGL. It contains macros which wrap OpenGL functions in order to clearly break when error occur while providing a clear error message. This may be preferrable to `GL_KHR_debug` callback based error handling supported since OpenGL 4.3, because this error handling mechanism will break immediatly when and where an error occurs. This library is meant to help in debug builds only, and is designed to leave your code as if it was never even there when you compile release builds.
+gld.h is a header-only C library to help with debugging while working with OpenGL. It contains macros which wrap OpenGL functions in order to clearly break when errors occur while providing a clear error message. This may be preferable to `GL_KHR_debug` callback based error handling supported since OpenGL 4.3, because this error handling mechanism will break immediatly when and where an error occurs. This library is meant to help in debug builds only, and is designed to leave your code as if it was never even there when you compile release builds.
 
 ## How To Use
 
@@ -32,7 +32,7 @@ To use the features of this library, call your OpenGL functions with gld in fron
 gldActiveTexture(GL_TEXTURE0);
 ```
 
-For Opengl functions that return something, you now have to pass the variable you want to return to as first argument. 
+For OpenGL functions that return something, you now have to pass the variable you want to return to as first argument. 
 
 ```cpp
 GLuint gl_program;
@@ -41,4 +41,4 @@ gldCreateProgram(gl_program);
 
 ## How It Works
 
-When configuring this CMake project, a python script is run which analyzes the official OpenGL specification xml document (gl.xml) and generates macros for each OpenGL function in the header gld/gld.h. These macros call the associated gl call while also logging and performing a debug break immediatly when errors occur.
+When configuring this CMake project, a python script is run which analyzes the official OpenGL specification xml document (gl.xml) and generates macros for each OpenGL function in the header gld/gld.h. These macros call the associated gl call while also logging and performing a debug break immediately when errors occur.
