@@ -1,3 +1,7 @@
+#  SPDX-FileCopyrightText: 2026 Daniel Aimé Valcour <fosssweeper@gmail.com>
+#
+#  SPDX-License-Identifier: MIT
+
 cmake_minimum_required(VERSION 3.21)
 
 project(gld DESCRIPTION "Header only OpenGL debugging library." VERSION 2.0.0 LANGUAGES C)

@@ -1,3 +1,7 @@
+#  SPDX-FileCopyrightText: 2026 Daniel Aimé Valcour <fosssweeper@gmail.com>
+#
+#  SPDX-License-Identifier: MIT
+
 import xml.etree.ElementTree as ET
 
 tree = ET.parse('gl.xml')
