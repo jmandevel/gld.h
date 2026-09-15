@@ -41,4 +41,4 @@ gldCreateProgram(gl_program);
 
 ## How It Works
 
-When configuring this CMake project, a python script is run which analyzes the official OpenGL specification xml document (gl.xml) and generates macros for each OpenGL function in the header gld/gld.h. These macros appear to be exactly like normal gl calls, except they begin with gld instead of gl.
+When configuring this CMake project, a python script is run which analyzes the official OpenGL specification xml document (gl.xml) and generates macros for each OpenGL function in the header gld/gld.h. These macros call the associated gl call while also logging and performing a debug break immediatly when errors occur.
