@@ -21,8 +21,8 @@ for commands_block in registry.findall('commands'):
             args_text = f"{', '.join(param_names)}"
             line = f"#define {gld_name}({args_text}) GLD_CALL({gl_name}({wrapped_args_text}))"
         else:
-            args_text = ", ".join(['sret'] + param_names)            
-            line = f"#define {gld_name}({args_text}) GLD_CALL_RET(sret, {gl_name}({wrapped_args_text}))"
+            args_text = ", ".join(param_names)
+            line = f"#define {gld_name}({args_text}) GLD_CALL_RET({gl_name}({wrapped_args_text}))"
 
         print(line)
 

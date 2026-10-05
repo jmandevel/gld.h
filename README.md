@@ -32,11 +32,10 @@ To use the features of this library, call your OpenGL functions with gld in fron
 gldActiveTexture(GL_TEXTURE0);
 ```
 
-For OpenGL functions that return something, you now have to pass the variable you want to return to as first argument. 
+OpenGL functions that return something return their value normally.
 
 ```cpp
-GLuint gl_program;
-gldCreateProgram(gl_program);
+GLuint gl_program = gldCreateProgram();
 ```
 
 ## How It Works

@@ -27,7 +27,7 @@
 // SOFTWARE.
 
 /*
-    gld.h - VERSION 2.0 - A header-only OpenGL debugging library
+    gld.h - VERSION 3.0 - A header-only OpenGL debugging library
     ------------------------------------------------------------
 
     Created By Dan Aime Valcour (jmandevel) - https://github.com/jmandevel
@@ -44,74 +44,80 @@
     Call OpenGL functions with gld in front instead of gl:
 
         gldActiveTexture(GL_TEXTURE0);
+        GLuint gl_program = gldCreateProgram();
 
-    For OpenGL functions that return something, you now have to pass the
-    variable you want to return to as first argument. 
-
-        GLuint gl_program;
-        gldCreateProgram(gl_program);
+    This library only works on Clang and GCC compilers. It has no effect if using MSVC.
 */
-
 
 #if !defined(GLD_H)
 #define GLD_H
 
 #if !defined(GLD_DEBUG_TRAP)
-    #if defined(_MSC_VER)
-        #define GLD_DEBUG_TRAP() __debugbreak()
-    #elif defined(__GNUC__) || defined(__clang__)
-        #include <signal.h>
-        #define GLD_DEBUG_TRAP() raise(SIGTRAP)
-    #else
-        #define GLD_DEBUG_BREAK() ((void)0)
-    #endif
+#if defined(_MSC_VER)
+#define GLD_DEBUG_TRAP() __debugbreak()
+#elif defined(__GNUC__) || defined(__clang__)
+#include <signal.h>
+#define GLD_DEBUG_TRAP() raise(SIGTRAP)
+#else
+#define GLD_DEBUG_BREAK() ((void)0)
+#endif
 #endif
 
 #if !defined(GLD_DISABLE) && (!defined(GLD_RELEASE) || defined(NDEBUG))
 
-    #if !defined(GLD_LOG_ERROR)
-        #include <stdio.h>
-        static inline int _GLD_logErrors(const char *func, const char *file, int line)
-        {
-            GLenum error = glGetError();
-            int is_ok = 1;
-            while (error != GL_NO_ERROR)
-            {
-                fprintf(stderr, "[Opengl Error] (0x%04x): %s %s:%d", error, func, file, line);
-                is_ok = 0;
-            }
-            return is_ok;
-        }
-        #define GLD_LOG_ERRORS(func, file, line) _GLD_logErrors(func, file, line)
-    #endif
+#if !defined(GLD_LOG_ERROR)
+#include <stdio.h>
+static inline int _GLD_logErrors(const char *func, const char *file, int line)
+{
+    GLenum error = glGetError();
+    int is_ok = 1;
+    while (error != GL_NO_ERROR)
+    {
+        fprintf(stderr, "[Opengl Error] (0x%04x): %s %s:%d", error, func, file, line);
+        is_ok = 0;
+    }
+    return is_ok;
+}
+#define GLD_LOG_ERRORS(func, file, line) _GLD_logErrors(func, file, line)
+#endif
 
-    #define GLD_CALL(X)                                 \
-        do                                              \
-        {                                               \
-            while (glGetError() != GL_NO_ERROR);        \
-            X;                                          \
-            if (!GLD_LOG_ERRORS(#X, __FILE__, __LINE__)) \
-            {                                           \
-                GLD_DEBUG_TRAP();                       \
-            }                                           \
-        } while (0)
+#if defined(__GNUC__) || defined(__clang__)
+#define GLD_CALL(X)                                  \
+    do                                               \
+    {                                                \
+        while (glGetError() != GL_NO_ERROR)          \
+            ;                                        \
+        X;                                           \
+        if (!GLD_LOG_ERRORS(#X, __FILE__, __LINE__)) \
+        {                                            \
+            GLD_DEBUG_TRAP();                        \
+        }                                            \
+    } while (0)
+#else
+#define GLD_CALL(X) (X)
+#endif
 
-    #define GLD_CALL_RET(OUT_RET, X)                    \
-        do                                              \
-        {                                               \
-            while (glGetError() != GL_NO_ERROR);        \
-            (OUT_RET) = (X);                            \
-            if (!GLD_LOG_ERRORS(#X, __FILE__, __LINE__)) \
-            {                                           \
-                GLD_DEBUG_TRAP();                       \
-            }                                           \
-        } while (0)
+#if defined(__GNUC__) || defined(__clang__)
+#define GLD_CALL_RET(X)                              \
+    ({                                               \
+        while (glGetError() != GL_NO_ERROR)          \
+            ;                                        \
+        __typeof__(X) _gld_out = (X);                \
+        if (!GLD_LOG_ERRORS(#X, __FILE__, __LINE__)) \
+        {                                            \
+            GLD_DEBUG_TRAP();                        \
+        }                                            \
+        _gld_out;                                    \
+    })
+#else
+#define GLD_CALL_RET(X) (X)
+#endif
 
 #else
 
-    #define GLD_LOG_ERRORS(func, file, line) ((void)0)
-    #define GLD_CALL(X) X
-    #define GLD_CALL_RET(OUT_RET, X) (OUT_RET) = (X)
+#define GLD_LOG_ERRORS(func, file, line) ((void)0)
+#define GLD_CALL(X) X
+#define GLD_CALL_RET(X) (X)
 
 #endif
 
