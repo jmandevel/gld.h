@@ -27,7 +27,7 @@
 // SOFTWARE.
 
 /*
-    gld.h - VERSION 2.0.0.1 - A header-only OpenGL debugging library
+    gld.h - VERSION 3.0 - A header-only OpenGL debugging library
     ------------------------------------------------------------
 
     Created By Dan Aime Valcour (jmandevel) - https://github.com/jmandevel
