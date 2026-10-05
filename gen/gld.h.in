@@ -27,7 +27,7 @@
 // SOFTWARE.
 
 /*
-    gld.h - VERSION 3.0 - A header-only OpenGL debugging library
+    gld.h - VERSION 3.0.1 - A header-only OpenGL debugging library
     ------------------------------------------------------------
 
     Created By Dan Aime Valcour (jmandevel) - https://github.com/jmandevel
@@ -73,7 +73,8 @@ static inline int _GLD_logErrors(const char *func, const char *file, int line)
     int is_ok = 1;
     while (error != GL_NO_ERROR)
     {
-        fprintf(stderr, "[Opengl Error] (0x%04x): %s %s:%d", error, func, file, line);
+        fprintf(stderr, "[Opengl Error] (0x%04x): %s %s:%d\n", error, func, file, line);
+        error = glGetError();
         is_ok = 0;
     }
     return is_ok;
