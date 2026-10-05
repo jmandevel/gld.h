@@ -73,7 +73,7 @@ static inline int _GLD_logErrors(const char *func, const char *file, int line)
     int is_ok = 1;
     while (error != GL_NO_ERROR)
     {
-        fprintf(stderr, "[Opengl Error] (0x%04x): %s %s:%d", error, func, file, line);
+        fprintf(stderr, "[Opengl Error] (0x%04x): %s %s:%d\n", error, func, file, line);
         is_ok = 0;
     }
     return is_ok;
