@@ -44,12 +44,9 @@
     Call OpenGL functions with gld in front instead of gl:
 
         gldActiveTexture(GL_TEXTURE0);
+        GLuint gl_program = gldCreateProgram();
 
-    For OpenGL functions that return something, you now have to pass the
-    variable you want to return to as first argument. 
-
-        GLuint gl_program;
-        gldCreateProgram(gl_program);
+    This library only works on Clang and GCC compilers. It has no effect if using MSVC.
 */
 
 
@@ -85,33 +82,39 @@
         #define GLD_LOG_ERRORS(func, file, line) _GLD_logErrors(func, file, line)
     #endif
 
-    #define GLD_CALL(X)                                 \
-        do                                              \
-        {                                               \
-            while (glGetError() != GL_NO_ERROR);        \
-            X;                                          \
-            if (!GLD_LOG_ERRORS(#X, __FILE__, __LINE__)) \
-            {                                           \
-                GLD_DEBUG_TRAP();                       \
-            }                                           \
-        } while (0)
+#define GLD_CALL(X)                                  \
+    do                                               \
+    {                                                \
+        while (glGetError() != GL_NO_ERROR)          \
+            ;                                        \
+        X;                                           \
+        if (!GLD_LOG_ERRORS(#X, __FILE__, __LINE__)) \
+        {                                            \
+            GLD_DEBUG_TRAP();                        \
+        }                                            \
+    } while (0)
 
-    #define GLD_CALL_RET(OUT_RET, X)                    \
-        do                                              \
-        {                                               \
-            while (glGetError() != GL_NO_ERROR);        \
-            (OUT_RET) = (X);                            \
+#if defined(__GNUC__) || defined(__clang__)
+    #define GLD_CALL_RET(X)                             \
+        ({                                              \
+            while (glGetError() != GL_NO_ERROR)         \
+                ;                                       \
+            __typeof__(X) _gld_out = (X);               \
             if (!GLD_LOG_ERRORS(#X, __FILE__, __LINE__)) \
             {                                           \
                 GLD_DEBUG_TRAP();                       \
             }                                           \
-        } while (0)
+            _gld_out;                                   \
+        })
+#else
+    #define GLD_CALL_RET(X) (X)
+#endif
 
 #else
 
     #define GLD_LOG_ERRORS(func, file, line) ((void)0)
     #define GLD_CALL(X) X
-    #define GLD_CALL_RET(OUT_RET, X) (OUT_RET) = (X)
+    #define GLD_CALL_RET(X) (X)
 
 #endif
 
